@@ -12,11 +12,6 @@ public class HomeController {
         return "MyShop/index";
     }
 
-    @RequestMapping("/admin")
-    public String adminHome() {
-        return "Admin/index";
-    }
-
     @RequestMapping("/403")
     public String loginerror() {
         return "Admin/403";
