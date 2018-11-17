@@ -9,16 +9,16 @@ public class HomeController {
 
     @RequestMapping("/")
     public String welcome() {
-        return "MyShop/index";
+        return "shop/index";
     }
 
     @RequestMapping("/403")
     public String loginerror() {
-        return "Admin/403";
+        return "admin/403";
     }
 
     @RequestMapping("/login")
     public String login() {
-        return "Admin/signin";
+        return "admin/signin";
     }
 }

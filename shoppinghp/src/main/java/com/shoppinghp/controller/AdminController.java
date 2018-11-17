@@ -9,9 +9,9 @@ public class AdminController {
 
     @RequestMapping("/")
     public String adminHome() {
-        return "Admin/index";
+        return "admin/index";
     }
 
     @RequestMapping("/category")
-    public String category() { return "Admin/category"; }
+    public String category() { return "admin/category"; }
 }
