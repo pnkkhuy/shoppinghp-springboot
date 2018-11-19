@@ -1,6 +1,6 @@
 package com.shoppinghp.dao;
 
-import com.shoppinghp.entitty.Account;
+import com.shoppinghp.entity.Account;
 import com.shoppinghp.exception.ShoppingException;
 
 import java.util.List;

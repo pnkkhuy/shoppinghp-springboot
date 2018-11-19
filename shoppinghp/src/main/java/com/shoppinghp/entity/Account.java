@@ -1,4 +1,4 @@
-package com.shoppinghp.entitty;
+package com.shoppinghp.entity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,37 +9,29 @@ public class Account {
     @Id
     @Column(name = "Email", length = 200, nullable = false)
     private String email;
-
     @Column(name = "Password", length = 30, nullable = false)
     private String password;
-
     @Column(name = "Role", length = 45, nullable = false)
     private String role;
-
     @Column(name = "Fullname", length = 200, nullable = false)
     private String fullName;
-
     @Column(name = "Address", length = 200, nullable = false)
     private String address;
-
     @Column(name = "Phone", length = 45)
     private String phone;
-
     @Column(name = "BillingAddress", length = 200)
     private String billingAddress;
-
     @Column(name = "ShipAddress", length = 200)
     private String shipAdrress;
-
-    @Column(name = "DateEntered", nullable = false)
+    @Column(name = "DateEntered")
     private Date dateEntered;
-
     @Lob @Basic(fetch = FetchType.LAZY)
     @Column(name = "Image", length = 100000)
     private byte[] image;
-
     @Column(name = "IsActive", nullable = false)
     private short isActive;
+
+    public Account() {}
 
     public Account(Account acc) {
         this.email = acc.getEmail();

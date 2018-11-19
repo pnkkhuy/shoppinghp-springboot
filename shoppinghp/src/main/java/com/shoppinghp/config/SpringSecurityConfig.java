@@ -1,5 +1,6 @@
 package com.shoppinghp.config;
 
+import com.shoppinghp.handler.CustomizeAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
@@ -25,16 +26,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers("/", "/about").permitAll()
                     .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .antMatchers("/user/**").hasAnyRole("USER")
+                    //.antMatchers("/user/**").hasAnyRole("USER")
                     .and()
                     .formLogin()
                         .loginPage("/login")
                         .permitAll()
-                        .and()
+                        .successHandler(new CustomizeAuthenticationSuccessHandler())
+                    .and()
                     .logout()
                         .permitAll()
                         .and()
-                    .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
 
     @Autowired

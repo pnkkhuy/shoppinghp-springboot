@@ -1,11 +1,12 @@
 package com.shoppinghp.dao;
 
-import com.shoppinghp.entitty.Account;
+import com.shoppinghp.entity.Account;
 import com.shoppinghp.exception.ShoppingException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -24,7 +25,10 @@ public class AccountDAO implements IAccountDAO {
 
     @Override
     public Account getAccount(String email) {
-        return entityManager.find(Account.class, email);
+        return (Account) entityManager.createQuery(
+                "from Account where email = :email")
+                .setParameter("email", email)
+                .getSingleResult();
     }
 
     @Override
@@ -36,7 +40,7 @@ public class AccountDAO implements IAccountDAO {
     public void updateAccount(Account account) throws ShoppingException {
         if(accountExists(account.getEmail(), account.getPassword())) {
             Account acc = new Account(account);
-
+            entityManager.flush();
         } else {
             String message = String.format("Update account failed %s",account.getEmail());
             throw new ShoppingException(message);
