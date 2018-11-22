@@ -131,6 +131,10 @@ public class Account {
         return isActive;
     }
 
+    public boolean getIsActiveBoolean() {
+        return isActive == 1? true : false;
+    }
+
     public void setIsActive(short isActive) {
         this.isActive = isActive;
     }
