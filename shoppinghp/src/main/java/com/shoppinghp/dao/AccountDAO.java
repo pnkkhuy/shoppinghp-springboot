@@ -22,9 +22,9 @@ public class AccountDAO implements IAccountDAO {
 
     @Override
     public List<Account> getAllAccounts() {
-        String sql = "Select new " + Account.class.getName() + " from " + Account.class.getName();
+        String hql = "FROM Account as a ORDER BY a.email";
         Session session = this.sessionFactory.getCurrentSession();
-        Query<Account> query = session.createQuery(sql, Account.class);
+        Query<Account> query = session.createQuery(hql, Account.class);
         return query.getResultList();
     }
 

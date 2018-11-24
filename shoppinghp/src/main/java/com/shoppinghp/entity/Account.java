@@ -22,7 +22,7 @@ public class Account {
     @Column(name = "BillingAddress", length = 200)
     private String billingAddress;
     @Column(name = "ShipAddress", length = 200)
-    private String shipAdrress;
+    private String shipAddress;
     @Column(name = "DateEntered")
     private Date dateEntered;
     @Lob @Basic(fetch = FetchType.LAZY)
@@ -41,7 +41,7 @@ public class Account {
         this.address = acc.getAddress();
         this.phone = acc.phone;
         this.billingAddress = acc.getBillingAddress();
-        this.shipAdrress = acc.getShipAdrress();
+        this.shipAddress = acc.getShipAddress();
         this.dateEntered = acc.getDateEntered();
         this.image = acc.getImage();
         this.isActive = acc.getIsActive();
@@ -103,12 +103,12 @@ public class Account {
         this.billingAddress = billingAddress;
     }
 
-    public String getShipAdrress() {
-        return shipAdrress;
+    public String getShipAddress() {
+        return shipAddress;
     }
 
-    public void setShipAdrress(String shipAdrress) {
-        this.shipAdrress = shipAdrress;
+    public void setShipAddress(String shipAddress) {
+        this.shipAddress = shipAddress;
     }
 
     public Date getDateEntered() {

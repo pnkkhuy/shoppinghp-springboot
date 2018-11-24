@@ -54,21 +54,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    @Bean
     public PasswordEncoder passwordEncoder(){
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder;
     }
-
-    /*
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password("{noop}123456").roles("USER")
-                .and()
-                .withUser("khanhhuy215@gmail.com").password("{noop}123456").roles("ADMIN")
-                .and()
-                .withUser("admin").password("{noop}123456").roles("ADMIN");
-
-    }*/
 }

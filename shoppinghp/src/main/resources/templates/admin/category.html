@@ -8,7 +8,7 @@
 <div th:include="admin/fragments/blank :: loader"></div>
 
 <div>
-    <div th:include="admin/fragments/blank :: sidebar" class="sidebar">
+    <div class="sidebar" th:include="admin/fragments/blank :: sidebar">
     </div>
     <div class="page-container">
         <div th:include="admin/fragments/blank :: header" class="header navbar">
@@ -16,8 +16,40 @@
 
         <main class="main-content bgc-grey-100">
             <div id="mainContent">
-                <div class="full-container">
-                    <center>Hello world!!!</center>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                                <h4 class="c-grey-900 mB-20">Danh mục sản phẩm</h4>
+                                <table id="dataTable" class="table table-striped table-bordered" cellspacing="0"
+                                       width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Mã danh mục</th>
+                                        <th>Tên danh mục</th>
+                                        <th>Mô tả</th>
+                                        <th>Trạng thái</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Mã danh mục</th>
+                                        <th>Tên danh mục</th>
+                                        <th>Mô tả</th>
+                                        <th>Trạng thái</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    <tr th:each="category : ${category_list}">
+                                        <td th:text="${category.}"
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
