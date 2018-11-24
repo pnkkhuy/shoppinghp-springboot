@@ -30,12 +30,6 @@ public class MyUserDetailService implements UserDetailsService {
     @Autowired
     private AccountDAO accountDAO;
 
-    private final PasswordEncoder passwordEncoder;
-
-    public MyUserDetailService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         Account account =  accountDAO.getAccount(username);
@@ -51,13 +45,12 @@ public class MyUserDetailService implements UserDetailsService {
     }
 
     private User buildUserForAuthentication(Account account, List<GrantedAuthority> authorities) {
-        return new User(account.getEmail(), passwordEncoder.encode(account.getPassword()),
+        return new User(account.getEmail(), passwordEncoder().encode(account.getPassword()),
                         account.getIsActiveBoolean(),
                         true, true, true,
                         authorities);
     }
 
-    @Bean
     public PasswordEncoder passwordEncoder(){
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder;
