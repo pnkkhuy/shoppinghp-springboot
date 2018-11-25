@@ -36,7 +36,7 @@ public class AccountDAO implements IAccountDAO {
 
     @Override
     public Account getAccount(String email, String password) {
-        String hql = "FROM Account A WHERE A.email = :email and A.password = :password";
+        String hql = "FROM Account a WHERE a.email = :email and a.password = :password";
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery(hql);
         query.setParameter("email", email);
@@ -52,6 +52,17 @@ public class AccountDAO implements IAccountDAO {
     @Override
     public void updateAccount(Account account) throws ShoppingException {
 
+    }
+
+    @Override
+    public int updateAccountStatus(String email, short isActive) throws Exception {
+        String hql = "UPDATE Account a SET a.isActive = :isActive WHERE email = :email";
+        Session session = this.sessionFactory.getCurrentSession();
+        Query query = session.createQuery(hql);
+        query.setParameter("isActive", isActive);
+        query.setParameter("email", email);
+        int result = query.executeUpdate();
+        return result;
     }
 
     @Override

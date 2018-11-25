@@ -11,5 +11,6 @@ public interface IAccountDAO {
     Account getAccount(String email, String password);
     void addAccount(Account account);
     void updateAccount(Account account) throws ShoppingException;
+    int updateAccountStatus(String email, short isActive) throws Exception;
     boolean accountExists(String email, String password);
 }

@@ -63,13 +63,13 @@
                                         <td th:text="${account.shipAddress}"/>
                                         <td th:switch="${account.isActive}">
                                             <span th:case="'0'" class="badge badge-pill fl-r badge-danger lh-0 p-10">
-                                                <a class="isActiveStyle" th:href="@{/admin/account_active(email=${account.email},isActive=${account.isActive})}">
+                                                <a class="isActiveStyle" th:href="@{/admin/account_active(email=${account.email},isActive=1)}">
                                                     Không hoạt động
                                                 </a>
                                             </span>
                                             <span th:case="'1'" class="badge badge-pill fl-r badge-success lh-0 p-10">
-                                                <a class="isActiveStyle" th:href="@{/admin/account/(email=${account.email},isActive=${account.isActive})}">
-                                                    Không hoạt động
+                                                <a class="isActiveStyle" th:href="@{/admin/account_active(email=${account.email},isActive=0)}">
+                                                    Hoạt động
                                                 </a>
                                             </span>
                                         </td>
@@ -81,6 +81,13 @@
                                     </tr>
                                     </tbody>
                                 </table>
+
+                                <div th:if="${updateerror == 0}">
+                                    <div class="alert alert-danger">
+                                        Cập nhật thất bại
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

@@ -9,5 +9,6 @@ public interface IAccountService {
     Account getAccount(String email);
     boolean  addAccount(Account account);
     void updateAccount(Account account);
+    int updateAccountStatus(String email, short isActive);
     boolean accountExists(String email, String password);
 }
