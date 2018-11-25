@@ -3,30 +3,30 @@ package com.shoppinghp.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "accounts")
+//@Entity
+//@Table(name = "accounts")
 public class Account {
-    @Id
-    @Column(name = "Email", length = 200, nullable = false)
+    //@Id
+    //@Column(name = "Email", length = 200, nullable = false)
     private String email;
-    @Column(name = "Password", length = 30, nullable = false)
+    //@Column(name = "Password", length = 30, nullable = false)
     private String password;
-    @Column(name = "Role", length = 45, nullable = false)
+    //@Column(name = "Role", length = 45, nullable = false)
     private String role;
-    @Column(name = "Fullname", length = 200, nullable = false)
+    //@Column(name = "Fullname", length = 200, nullable = false)
     private String fullName;
-    @Column(name = "Address", length = 200, nullable = false)
+    //@Column(name = "Address", length = 200, nullable = false)
     private String address;
-    @Column(name = "Phone", length = 45)
+    //@Column(name = "Phone", length = 45)
     private String phone;
-    @Column(name = "BillingAddress", length = 200)
+    //@Column(name = "BillingAddress", length = 200)
     private String billingAddress;
-    @Column(name = "ShipAddress", length = 200)
+    //@Column(name = "ShipAddress", length = 200)
     private String shipAddress;
-    @Column(name = "DateEntered")
+    //@Column(name = "DateEntered")
     private Date dateEntered;
-    @Lob @Basic(fetch = FetchType.LAZY)
-    @Column(name = "Image", length = 100000)
+    //@Lob @Basic(fetch = FetchType.LAZY)
+    //@Column(name = "Image", length = 100000)
     private byte[] image;
     @Column(name = "IsActive", nullable = false)
     private short isActive;

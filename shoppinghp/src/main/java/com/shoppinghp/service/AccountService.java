@@ -43,7 +43,11 @@ public class AccountService implements IAccountService {
     @Override
     public int updateAccountStatus(String email, short isActive) {
         try {
+            if (email == null || email.isEmpty() || isActive < 0 || isActive > 1)
+                return 0;
+
             int result = accountDAO.updateAccountStatus(email, isActive);
+
             return result;
         } catch (Exception e) {
             e.printStackTrace();

@@ -32,12 +32,14 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        Account account =  accountDAO.getAccount(username);
-        try {
-            logger.info("Account: " + JsonClass.encodeToJsonEncode(account));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        if(username == null && username.isEmpty())
+            throw new UsernameNotFoundException(username);
+
+        Account account =  accountDAO.getAccountLogin(username);
+
+        if(account == null || account.getEmail().isEmpty())
+            throw new UsernameNotFoundException(username);
+
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>() {{
             add(new SimpleGrantedAuthority(account.getRole()));
         }};
