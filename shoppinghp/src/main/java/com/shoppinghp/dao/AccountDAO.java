@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -31,8 +32,7 @@ public class AccountDAO implements IAccountDAO {
 
     @Override
     public Account getAccount(String email) {
-        String hql = "SELECT a.email, a.role, a.fullName, a.address, a.phone, a.billingAddress, a.shipAddress, a.dateEntered, a.image, a.isActive " +
-                    "FROM Account a WHERE a.email = :email";
+        String hql = "FROM Account a WHERE a.email = :email";
         Session session = this.sessionFactory.getCurrentSession();
         Query<Account> query = session.createQuery(hql, Account.class);
         query.setParameter("email", email);
@@ -41,14 +41,20 @@ public class AccountDAO implements IAccountDAO {
 
     @Override
     public Account getAccountLogin(String email) {
-        String sql = "SELECT a.Email, a.Password, a.Role ,a.IsActive, a.FullName, a.Address \n" +
-                "FROM accounts a \n" +
-                "Where a.Email like :email";
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery(sql);
-        ((NativeQuery) query).addEntity(Account.class);
+        Query query = session.createQuery("SELECT a.email, a.password, a.role,a.isActive " +
+                        "FROM Account a " +
+                        "Where a.email like :email");
         query.setParameter("email", email);
-        return (Account)query.getResultList().get(0);
+        List<Object[]> list = query.list();
+        Account account = new Account();
+        for (Object[] row : list) {
+            account.setEmail(row[0].toString());
+            account.setPassword(row[1].toString());
+            account.setRole(row[2].toString());
+            account.setIsActive((short)row[3]);
+        }
+        return account;
     }
 
     @Override

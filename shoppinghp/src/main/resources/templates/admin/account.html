@@ -75,9 +75,7 @@
                                         </td>
                                         <td>
                                             <div class="peer">
-                                                <form th:action="@{/account_update(email=${account.email})}" method="get">
-                                                    <input type="submit" class="btn cur-p btn-info">
-                                                </form>
+                                                <a class="btn cur-p btn-info" th:href="@{/admin/account_update(email=${account.email})}">Cập nhật</a>
                                             </div>
                                         </td>
                                     </tr>
