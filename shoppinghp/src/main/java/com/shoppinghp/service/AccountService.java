@@ -2,6 +2,7 @@ package com.shoppinghp.service;
 
 import com.shoppinghp.dao.IAccountDAO;
 import com.shoppinghp.entity.Account;
+import com.shoppinghp.exception.ShoppingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public void updateAccount(Account account) {
-
+    public Account updateAccount(Account account) throws ShoppingException {
+        return  accountDAO.updateAccount(account);
     }
 
     @Override
