@@ -35,6 +35,15 @@ public class AccountDAO implements IAccountDAO {
     }
 
     @Override
+    public List<String> getRoles() {
+        String hql = "SELECT DISTINCT a.role FROM Account as a";
+        Session session = this.sessionFactory.getCurrentSession();
+        Query query = session.createQuery(hql);
+        List<String> result = query.list();
+        return result;
+    }
+
+    @Override
     public Account getAccount(String email) {
         String hql = "FROM Account a WHERE a.email = :email";
         Session session = this.sessionFactory.getCurrentSession();
@@ -77,7 +86,7 @@ public class AccountDAO implements IAccountDAO {
             account_temp.setShipAddress(account.getShipAddress());
             account_temp.setBillingAddress(account.getBillingAddress());
             account_temp.setAddress(account.getAddress());
-            //account_temp.setRole(account.getRole());
+            account_temp.setRole(account.getRole());
             account_temp.setFullName(account.getFullName());
             //account_temp.setImage(account.getImage());
             session.update(account_temp);

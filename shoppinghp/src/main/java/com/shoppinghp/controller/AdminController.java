@@ -50,12 +50,14 @@ public class AdminController {
     public String account_update(Model model,
                                  @RequestParam("email") String email) throws JsonProcessingException {
 
+        model.addAttribute("roles", accountService.getRoles());
         model.addAttribute("account", accountService.getAccount(email));
         return "admin/account_update";
     }
 
     @RequestMapping(value = "/account_update_proccess", method = RequestMethod.POST)
     public String account_update_proccess(Model model, @ModelAttribute Account account) throws ShoppingException {
+        model.addAttribute("roles", accountService.getRoles());
         model.addAttribute("account", accountService.updateAccount(account));
 
         return "admin/account_update";

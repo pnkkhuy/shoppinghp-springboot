@@ -125,7 +125,7 @@ public class Account {
     }
 
     public String getImageString() {
-        return Base64.getEncoder().encodeToString(getImage());
+        return Base64.getEncoder().encodeToString(getImage() == null ? new byte[0] : getImage());
     }
 
     public void setImage(byte[] image) {

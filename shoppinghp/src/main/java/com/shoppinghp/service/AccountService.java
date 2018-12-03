@@ -32,6 +32,11 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    public List<String> getRoles() {
+        return accountDAO.getRoles();
+    }
+
+    @Override
     public boolean addAccount(Account account) {
         return false;
     }

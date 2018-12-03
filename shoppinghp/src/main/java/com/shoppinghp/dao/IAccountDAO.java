@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IAccountDAO {
     List<Account> getAllAccounts();
+    List<String> getRoles();
     Account getAccountLogin(String email);
     Account getAccount(String email);
     void addAccount(Account account);
