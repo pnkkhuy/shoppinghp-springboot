@@ -5,6 +5,7 @@ import com.shoppinghp.dao.AccountDAO;
 import com.shoppinghp.entity.Account;
 import com.shoppinghp.exception.ShoppingException;
 import com.shoppinghp.service.AccountService;
+import com.shoppinghp.service.RoleService;
 import com.shoppinghp.utils.JsonClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,9 @@ public class AdminController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping("/")
     public String adminHome() {
@@ -50,14 +54,14 @@ public class AdminController {
     public String account_update(Model model,
                                  @RequestParam("email") String email) throws JsonProcessingException {
 
-        model.addAttribute("roles", accountService.getRoles());
+        model.addAttribute("roles", roleService.getAllRole());
         model.addAttribute("account", accountService.getAccount(email));
         return "admin/account_update";
     }
 
     @RequestMapping(value = "/account_update_proccess", method = RequestMethod.POST)
     public String account_update_proccess(Model model, @ModelAttribute Account account) throws ShoppingException {
-        model.addAttribute("roles", accountService.getRoles());
+        model.addAttribute("roles", roleService.getAllRole());
         model.addAttribute("account", accountService.updateAccount(account));
 
         return "admin/account_update";
