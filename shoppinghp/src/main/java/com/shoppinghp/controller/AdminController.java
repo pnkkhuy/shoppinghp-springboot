@@ -3,9 +3,9 @@ package com.shoppinghp.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shoppinghp.dao.AccountDAO;
 import com.shoppinghp.entity.Account;
+import com.shoppinghp.entity.Category;
 import com.shoppinghp.exception.ShoppingException;
-import com.shoppinghp.service.AccountService;
-import com.shoppinghp.service.RoleService;
+import com.shoppinghp.service.*;
 import com.shoppinghp.utils.JsonClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +20,13 @@ public class AdminController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private AccountService accountService;
+    private IAccountService accountService;
 
     @Autowired
-    private RoleService roleService;
+    private IRoleService roleService;
+
+    @Autowired
+    private ICategoryService categoryService;
 
     @RequestMapping("/")
     public String adminHome() {
@@ -67,4 +70,27 @@ public class AdminController {
         return "admin/account_update";
     }
     //endregion
+
+    // Category
+
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    public String category(Model model) {
+        model.addAttribute("category_list", categoryService.getAllCategory());
+        return "admin/category";
+    }
+
+    @RequestMapping(value = "category_active", method = RequestMethod.GET)
+    public String category_active(Model model,
+                                  @RequestParam("categoryId") int categoryId,
+                                  @RequestParam("isActive")short isActive) throws Exception {
+        int result = categoryService.updateCategoryStatus(categoryId, isActive);
+
+        if(result == 0)
+            model.addAttribute("updateerror", true );
+        model.addAttribute("category_list", categoryService.getAllCategory());
+        return "admin/category";
+    }
+
+
+    // end Category
 }

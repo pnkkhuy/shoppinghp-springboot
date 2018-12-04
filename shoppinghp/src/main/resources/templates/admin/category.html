@@ -43,10 +43,33 @@
                                     </tfoot>
                                     <tbody>
                                     <tr th:each="category : ${category_list}">
-                                        <td th:text="${category.}"
+                                        <td th:text="${category.categoryId}"></td>
+                                        <td th:text="${category.categoryName}"></td>
+                                        <td th:text="${category.description}"></td>
+                                        <td th:switch="${category.isActive}">
+                                            <span th:case="'0'" class="badge badge-pill fl-r badge-danger lh-0 p-10">
+                                                <a class="isActiveStyle" th:href="@{/admin/category_active(categoryId=${category.categoryId},isActive=1)}">
+                                                    Không hoạt động
+                                                </a>
+                                            </span>
+                                            <span th:case="'1'" class="badge badge-pill fl-r badge-success lh-0 p-10">
+                                                <a class="isActiveStyle" th:href="@{/admin/category_active(categoryId=${category.categoryId},isActive=0)}">
+                                                    Hoạt động
+                                                </a>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="peer">
+                                                <a class="btn cur-p btn-info" th:href="@{/admin/category_update(categoryId=${category.categoryId})}">Cập nhật</a>
+                                            </div>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
+
+                                <div th:if="${updateerror}" class="alert alert-danger">
+                                    Cập nhật thất bại
+                                </div>
                             </div>
                         </div>
                     </div>
