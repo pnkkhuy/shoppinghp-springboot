@@ -87,10 +87,26 @@ public class AdminController {
 
         if(result == 0)
             model.addAttribute("updateerror", true );
+
         model.addAttribute("category_list", categoryService.getAllCategory());
         return "admin/category";
     }
 
+    @RequestMapping(value = "category_update", method = RequestMethod.GET)
+    public String category_update(Model model,
+                                   @RequestParam("categoryId") int categoryId) throws ShoppingException {
+        model.addAttribute("category", categoryService.getCategoryByCategoryID(categoryId));
+        return "admin/category_update";
+    }
 
+    @RequestMapping(value = "category_update_proccess", method = RequestMethod.POST)
+    public String category_update_proccess(Model model,
+                                           @ModelAttribute Category category) throws ShoppingException {
+
+        category = categoryService.updateCategory(category);
+
+        model.addAttribute("category", category);
+        return "admin/category_update";
+    }
     // end Category
 }

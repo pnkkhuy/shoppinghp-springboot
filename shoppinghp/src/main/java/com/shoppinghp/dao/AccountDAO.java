@@ -96,7 +96,6 @@ public class AccountDAO implements IAccountDAO {
             logger.error(ex.toString());
             throw new ShoppingException(ex.toString());
         }
-
     }
 
     @Override

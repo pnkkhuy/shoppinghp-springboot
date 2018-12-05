@@ -2,6 +2,7 @@ package com.shoppinghp.service;
 
 import com.shoppinghp.dao.ICategoryDAO;
 import com.shoppinghp.entity.Category;
+import com.shoppinghp.exception.ShoppingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,16 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public Category updateCategory(Category category) {
-        return null;
+    public Category getCategoryByCategoryID(int categoryId) {
+        if(categoryId == 0)
+            return null;
+        else
+            return categoryDAO.getCategoryByCategoryID(categoryId);
+    }
+
+    @Override
+    public Category updateCategory(Category category) throws ShoppingException {
+        return categoryDAO.updateCategory(category);
     }
 
     @Override
