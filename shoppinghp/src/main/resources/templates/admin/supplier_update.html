@@ -1,0 +1,92 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="admin/fragments/blank :: head">
+</head>
+
+<body class="app">
+<div th:include="admin/fragments/blank :: loader"></div>
+
+<div>
+    <div class="sidebar" th:include="admin/fragments/blank :: sidebar">
+    </div>
+    <div class="page-container">
+        <div th:include="admin/fragments/blank :: header" class="header navbar">
+        </div>
+
+        <main class="main-content bgc-grey-100">
+            <div id="mainContent">
+                <div class="row gap-20 masonry pos-r">
+                    <div class="masonry-sizer col-md-6"></div>
+                    <div class="masonry-item col-md-6">
+                        <div class="bgc-white p-20 bd"><h6 class="c-grey-900">Cập nhật danh mục</h6>
+                            <div class="mT-30">
+                                <input type="hidden" value="${add_flag}">
+                                <form th:action="${add_flag} ? @{/admin/supplier_add_proccess} : @{/admin/supplier_update_proccess}" th:object="${supplier}" method="post">
+
+                                    <div class="form-group">
+                                        <h4 th:field="*{supplierId}" class="c-grey-900 mB-20"></h4>
+                                        <input th:field="*{supplierId}" type="hidden" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputCompanyName">Tên công ty</label>
+                                        <input th:field="*{companyName}" type="text" class="form-control" id="inputCompanyName" placeholder="Tên công ty">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputContactName">Tên người liên hệ</label>
+                                        <input th:field="*{contactName}" type="text" class="form-control" id="inputContactName" placeholder="Tên người liên hệ">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputAddress">Địa chỉ</label>
+                                        <input th:field="*{address}" type="text" class="form-control" id="inputAddress" placeholder="Địa chỉ">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputPhone">Điện thoại</label>
+                                        <input th:field="*{phone}" type="text" class="form-control" id="inputPhone" placeholder="Điện thoại">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputFax">Fax</label>
+                                        <input th:field="*{fax}" type="text" class="form-control" id="inputFax" placeholder="Fax">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputEmail">Email</label>
+                                        <input th:field="*{email}" type="text" class="form-control" id="inputEmail" placeholder="Email">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputWebsite">Webiste</label>
+                                        <input th:field="*{website}" type="text" class="form-control" id="inputWebsite" placeholder="Website">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputNote">Ghi chú</label>
+                                        <input th:field="*{note}" type="text" class="form-control" id="inputNote" placeholder="Ghi chú">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:if="${updateerror}" class="alert alert-danger">
+                    Cập nhật thất bại
+                </div>
+            </div>
+        </main>
+
+        <footer th:include="admin/fragments/blank :: footer" class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600"></footer>
+    </div>
+</div>
+
+<div th:include="admin/fragments/blank :: scripts"></div>
+</body>
+
+</html>

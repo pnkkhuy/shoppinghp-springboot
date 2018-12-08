@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shoppinghp.dao.AccountDAO;
 import com.shoppinghp.entity.Account;
 import com.shoppinghp.entity.Category;
+import com.shoppinghp.entity.Supplier;
 import com.shoppinghp.exception.ShoppingException;
 import com.shoppinghp.service.*;
 import com.shoppinghp.utils.JsonClass;
@@ -27,6 +28,9 @@ public class AdminController {
 
     @Autowired
     private ICategoryService categoryService;
+
+    @Autowired
+    private ISupplierService supplierService;
 
     @RequestMapping("/")
     public String adminHome() {
@@ -133,4 +137,65 @@ public class AdminController {
         return "redirect:/admin/category_add";
     }
     // end Category
+
+    // Start Supplier
+    @RequestMapping(value = "/supplier", method = RequestMethod.GET)
+    public String supplier(Model model) {
+        model.addAttribute("supplier_list", supplierService.getAllSupplier());
+        return "admin/supplier";
+    }
+
+    @RequestMapping(value = "/supplier_active", method = RequestMethod.GET)
+    public String supplier_active(Model model,
+                                  @RequestParam("supplierId") int supplierId,
+                                  @RequestParam("isActive")short isActive) throws Exception {
+        int result = supplierService.updateSupplierStatus(supplierId, isActive);
+
+        if(result == 0)
+            model.addAttribute("updateerror", true );
+
+        model.addAttribute("supplier_list", supplierService.getAllSupplier());
+        return "admin/supplier";
+    }
+
+    @RequestMapping(value = "/supplier_update", method = RequestMethod.GET)
+    public String supplier_update(Model model,
+                                  @RequestParam("supplierId") int supplierId) throws ShoppingException {
+        model.addAttribute("supplier", supplierService.getSupplierBySupplierID(supplierId));
+        return "admin/supplier_update";
+    }
+
+    @RequestMapping(value = "/supplier_update_proccess", method = RequestMethod.POST)
+    public String supplier_update_proccess(Model model,
+                                           @ModelAttribute Supplier supplier) throws ShoppingException {
+        supplier = supplierService.updateSupplier(supplier);
+
+        model.addAttribute("supplier", supplier);
+        return "admin/supplier_update";
+    }
+
+    @RequestMapping(value = "/supplier_add", method = RequestMethod.GET)
+    public String supplier_add(Model model) throws ShoppingException {
+        model.addAttribute("add_flag", true);
+        model.addAttribute("supplier", new Supplier());
+        return "admin/supplier_update";
+    }
+
+    @RequestMapping(value = "/supplier_add_proccess", method = RequestMethod.POST)
+    public String supplier_add_proccess(Model model, @ModelAttribute Supplier supplier) throws ShoppingException {
+
+        try {
+            Supplier supplier_add = supplierService.addSupplier(supplier);
+
+            if(supplier_add != null) {
+                model.addAttribute("category_list", categoryService.getAllCategory());
+                return "admin/supplier";
+            }
+        }catch (ShoppingException ex) {
+            model.addAttribute("updateerror", ex.getMessage());
+        }
+        return "redirect:/admin/supplier_add";
+    }
+
+    // End Supplier
 }

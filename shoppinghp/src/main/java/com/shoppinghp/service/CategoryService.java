@@ -46,7 +46,7 @@ public class CategoryService implements ICategoryService {
             return result;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("[updateAccountStatus] error", e);
+            logger.error("[updateCategoryStatus] error", e);
             return 0;
         }
     }

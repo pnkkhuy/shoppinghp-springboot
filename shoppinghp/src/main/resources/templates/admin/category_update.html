@@ -21,8 +21,8 @@
                     <div class="masonry-item col-md-6">
                         <div class="bgc-white p-20 bd"><h6 class="c-grey-900">Cập nhật danh mục</h6>
                             <div class="mT-30">
-                                <input type="hidden" value="@{add_flag}">
-                                <form th:action="@{add_flag} ? @{/admin/category_add_proccess} : @{/admin/category_update_proccess}" th:object="${category}" method="post">
+                                <input type="hidden" value="${add_flag}">
+                                <form th:action="${add_flag} ? @{/admin/category_add_proccess} : @{/admin/category_update_proccess}" th:object="${category}" method="post">
 
                                     <div class="form-group">
                                         <h4 th:field="*{categoryId}" class="c-grey-900 mB-20"></h4>
