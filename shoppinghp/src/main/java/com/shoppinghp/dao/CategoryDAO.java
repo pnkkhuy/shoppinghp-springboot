@@ -71,6 +71,9 @@ public class CategoryDAO implements ICategoryDAO {
 
     @Override
     public Category addCategory(Category category) {
-        return null;
+        category.setIsActive((short) 1);
+        Session session = this.sessionFactory.getCurrentSession();
+        int id =  (int) session.save(category);
+        return getCategoryByCategoryID(id);
     }
 }

@@ -79,7 +79,7 @@ public class AdminController {
         return "admin/category";
     }
 
-    @RequestMapping(value = "category_active", method = RequestMethod.GET)
+    @RequestMapping(value = "/category_active", method = RequestMethod.GET)
     public String category_active(Model model,
                                   @RequestParam("categoryId") int categoryId,
                                   @RequestParam("isActive")short isActive) throws Exception {
@@ -92,14 +92,14 @@ public class AdminController {
         return "admin/category";
     }
 
-    @RequestMapping(value = "category_update", method = RequestMethod.GET)
+    @RequestMapping(value = "/category_update", method = RequestMethod.GET)
     public String category_update(Model model,
                                    @RequestParam("categoryId") int categoryId) throws ShoppingException {
         model.addAttribute("category", categoryService.getCategoryByCategoryID(categoryId));
         return "admin/category_update";
     }
 
-    @RequestMapping(value = "category_update_proccess", method = RequestMethod.POST)
+    @RequestMapping(value = "/category_update_proccess", method = RequestMethod.POST)
     public String category_update_proccess(Model model,
                                            @ModelAttribute Category category) throws ShoppingException {
 
@@ -107,6 +107,30 @@ public class AdminController {
 
         model.addAttribute("category", category);
         return "admin/category_update";
+    }
+
+    @RequestMapping(value = "/category_add", method = RequestMethod.GET)
+    public String category_add(Model model) throws ShoppingException {
+        model.addAttribute("add_flag", true);
+        model.addAttribute("category", new Category());
+        return "admin/category_update";
+    }
+
+    @RequestMapping(value = "/category_add_proccess", method = RequestMethod.POST)
+    public String category_add_proccess(Model model, @ModelAttribute Category category) throws ShoppingException {
+
+        try {
+            Category category_add = categoryService.addCategory(category);
+            if(category_add != null) {
+                model.addAttribute("category_list", categoryService.getAllCategory());
+                return "admin/category";
+            }
+        }catch (ShoppingException ex) {
+            model.addAttribute("updateerror", ex.getMessage());
+        }
+        model.addAttribute("add_flag", 1);
+        model.addAttribute("category", new Category());
+        return "redirect:/admin/category_add";
     }
     // end Category
 }

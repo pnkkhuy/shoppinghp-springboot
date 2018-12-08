@@ -52,7 +52,10 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public Category addCategory(Category category) {
-        return null;
+    public Category addCategory(Category category) throws ShoppingException {
+        if(category.getCategoryName().isEmpty())
+            throw new ShoppingException("Category Name cann't be empty");
+
+        return categoryDAO.addCategory(category);
     }
 }

@@ -10,5 +10,5 @@ public interface ICategoryService {
     Category getCategoryByCategoryID(int categoryId);
     Category updateCategory(Category category) throws ShoppingException;
     int updateCategoryStatus(int categoryId, short isActive) throws Exception;
-    Category addCategory(Category category);
+    Category addCategory(Category category) throws ShoppingException;
 }

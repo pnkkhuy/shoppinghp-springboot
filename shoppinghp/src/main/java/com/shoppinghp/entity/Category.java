@@ -1,16 +1,20 @@
 package com.shoppinghp.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "category", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "CategoryID"),
+        @UniqueConstraint(columnNames = "CategoryName")
+})
+public class Category implements Serializable {
     @Id
-    @Column(name = "CategoryID", nullable = false)
+    @Column(name = "CategoryID", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
 
-    @Column(name = "CategoryName", length = 200, nullable = false)
+    @Column(name = "CategoryName", unique = true, length = 200, nullable = false)
     private String categoryName;
 
     @Column(name = "Description", length = 200)
