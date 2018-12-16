@@ -2,6 +2,9 @@ package com.shoppinghp.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "category", uniqueConstraints = {
@@ -19,6 +22,9 @@ public class Category implements Serializable {
 
     @Column(name = "Description", length = 200)
     private String description;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<Product> products;
 
     @Column(name = "IsActive", nullable = false)
     private short isActive;

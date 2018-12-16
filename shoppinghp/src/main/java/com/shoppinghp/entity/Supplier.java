@@ -1,6 +1,9 @@
 package com.shoppinghp.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "suppliers")
@@ -33,6 +36,9 @@ public class Supplier {
 
     @Column(name = "Note", unique = true, length = 1000, nullable = true)
     private String note;
+
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    private Set<Product> products;
 
     @Column(name = "IsActive", nullable = false)
     private short isActive;

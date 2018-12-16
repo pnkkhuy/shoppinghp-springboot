@@ -75,7 +75,7 @@ public class AdminController {
     }
     //endregion
 
-    // Category
+    // region Category
 
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public String category(Model model) {
@@ -136,9 +136,9 @@ public class AdminController {
         model.addAttribute("category", new Category());
         return "redirect:/admin/category_add";
     }
-    // end Category
+    // endregion Category
 
-    // Start Supplier
+    // region Supplier
     @RequestMapping(value = "/supplier", method = RequestMethod.GET)
     public String supplier(Model model) {
         model.addAttribute("supplier_list", supplierService.getAllSupplier());
@@ -197,5 +197,7 @@ public class AdminController {
         return "redirect:/admin/supplier_add";
     }
 
-    // End Supplier
+    // endregion Supplier
+
+
 }
