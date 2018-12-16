@@ -2,6 +2,7 @@ package com.shoppinghp.dao;
 
 import com.shoppinghp.entity.Category;
 import com.shoppinghp.entity.Product;
+import com.shoppinghp.entity.Supplier;
 import com.shoppinghp.exception.ShoppingException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,6 +24,12 @@ public class ProductDAO implements IProductDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    ICategoryDAO categoryDAO;
+
+    @Autowired
+    ISupplierDAO supplierDAO;
 
     @Override
     public List<Product> getAllProduct() {
@@ -68,7 +75,13 @@ public class ProductDAO implements IProductDAO {
             Product product_temp = (Product) query.list().get(0);
             product_temp.setProductName(product.getProductName());
             product_temp.setProductDescription(product.getProductDescription());
-            product_temp.setCategory(product.getCategory());
+
+            Supplier supplier = supplierDAO.getSupplierBySupplierID(product.getSupplier().getSupplierId());
+            product_temp.setSupplier(supplier);
+
+            Category category = categoryDAO.getCategoryByCategoryID(product.getCategory().getCategoryId());
+            product_temp.setCategory(category);
+
             session.update(product_temp);
             return product_temp;
         }catch (Exception ex) {

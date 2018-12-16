@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="admin/fragments/blank :: head">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
 <body class="app">
@@ -36,12 +37,28 @@
 
                                     <div class="form-group">
                                         <label for="inputDescription">Mô tả</label>
-                                        <input th:field="*{productDescription}" type="text" class="form-control" id="inputDescription" placeholder="Mô tả">
+                                        <div th:field="*{productDescription}" id="editor">
+                                            <p>Hello World!</p>
+                                            <p>Some initial <strong>bold</strong> text</p>
+                                            <p><br></p>
+                                        </div>
+                                        <input type="text" class="form-control" id="inputDescription" placeholder="Mô tả">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="inputDescription">Danh mục</label>
-                                        <select th:field="*{supplier}">
+                                        <label for="inputCategory">Danh mục</label>
+                                        <select id="inputCategory" th:field="*{category.categoryId}">
+                                            <option th:each="categoryItem : ${category_list}"
+                                                    th:value="${categoryItem.categoryId}"
+                                                    th:text="${categoryItem.categoryName}"
+                                                    th:selected="${categoryItem.categoryId} eq ${product.category.categoryId}">
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputSupplier">Nhà cung cấp</label>
+                                        <select id="inputSupplier" th:field="*{supplier.supplierId}">
                                             <option th:each="supplierItem : ${supplier_list}"
                                                     th:value="${supplierItem.supplierId}"
                                                     th:text="${supplierItem.companyName}"
@@ -68,6 +85,13 @@
 </div>
 
 <div th:include="admin/fragments/blank :: scripts"></div>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+</script>
 </body>
 
 </html>

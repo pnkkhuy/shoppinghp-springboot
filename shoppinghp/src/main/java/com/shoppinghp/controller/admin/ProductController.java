@@ -53,15 +53,18 @@ public class ProductController {
                                   @RequestParam("productId") int productId) throws ShoppingException {
         model.addAttribute("product", productService.getProductByProductID(productId));
         model.addAttribute("supplier_list", supplierService.getAllSupplier());
+        model.addAttribute("category_list", categoryService.getAllCategory());
         return "admin/product_update";
     }
 
     @RequestMapping(value = "/product_update_proccess", method = RequestMethod.POST)
     public String product_update_proccess(Model model,
-                                           @ModelAttribute Product product) throws ShoppingException {
+                                          @ModelAttribute Product product) throws ShoppingException {
 
         product = productService.updateProduct(product);
 
+        model.addAttribute("supplier_list", supplierService.getAllSupplier());
+        model.addAttribute("category_list", categoryService.getAllCategory());
         model.addAttribute("product", product);
         return "admin/product_update";
     }
@@ -69,6 +72,8 @@ public class ProductController {
     @RequestMapping(value = "/product_add", method = RequestMethod.GET)
     public String product_add(Model model) throws ShoppingException {
         model.addAttribute("add_flag", true);
+        model.addAttribute("supplier_list", supplierService.getAllSupplier());
+        model.addAttribute("category_list", categoryService.getAllCategory());
         model.addAttribute("product", new Product());
         return "admin/product_update";
     }
@@ -87,6 +92,8 @@ public class ProductController {
         }
         model.addAttribute("add_flag", 1);
         model.addAttribute("product", new Product());
+        model.addAttribute("supplier_list", supplierService.getAllSupplier());
+        model.addAttribute("category_list", categoryService.getAllCategory());
         return "redirect:/admin/product_add";
     }
 }
