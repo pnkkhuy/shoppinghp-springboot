@@ -1,8 +1,8 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="admin/fragments/blank :: head">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<head th:include="admin/fragments/blank :: head (quillcssflag=true)">
+
 </head>
 
 <body class="app">
@@ -36,13 +36,21 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="inputDescription">Mô tả</label>
-                                        <div th:field="*{productDescription}" id="editor">
-                                            <p>Hello World!</p>
-                                            <p>Some initial <strong>bold</strong> text</p>
-                                            <p><br></p>
+                                        <label >Mô tả</label>
+
+                                        <style>
+                                            .ql-toolbar { position: absolute; top: 0;left:0;right:0}
+                                            #productDescriptionHtml {display: none;}
+                                        </style>
+
+                                        <div style="position:relative;border:solid 1px;">
+                                            <div id="editorcontainer" style="height:10em; min-height:100%; overflow-y:auto;margin-top:3em">
+                                                <div id="editor" style="min-height:100%; height:auto;"></div>
+                                            </div>
                                         </div>
-                                        <input type="text" class="form-control" id="inputDescription" placeholder="Mô tả">
+                                        <input type="hidden" th:field="*{productDescription}" id="productDescriptionHtml"></input>
+                                        <!--div th:field="*{productDescription}" id="editor">
+                                        </div-->
                                     </div>
 
                                     <div class="form-group">
@@ -85,12 +93,36 @@
 </div>
 
 <div th:include="admin/fragments/blank :: scripts"></div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-  var quill = new Quill('#editor', {
-    theme: 'snow'
-  });
+    var quill = new Quill('#editor', {
+        scrollingContainer: "#editorcontainer",
+        theme: 'snow',
+        modules: {
+            toolbar:[
+              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+              ['bold', 'italic', 'underline'],
+              ['image', 'code-block', 'blockquote'],
+              ['clean'],
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }]
+            ]
+        }
+    });
+
+    var productDescriptionHtml = document.getElementById('productDescriptionHtml');
+
+    quill.on('text-change', function() {
+      var justHtml = quill.root.innerHTML;
+      productDescriptionHtml.value = justHtml;
+      console.log(justHtml);
+    });
+
+    $(document).ready(function() {
+        console.log( "ready!" );
+        quill.root.innerHTML = productDescriptionHtml.value;
+    });
+
 </script>
 </body>
 
