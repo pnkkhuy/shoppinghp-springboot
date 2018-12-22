@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -81,6 +80,17 @@ public class ProductDAO implements IProductDAO {
 
             Category category = categoryDAO.getCategoryByCategoryID(product.getCategory().getCategoryId());
             product_temp.setCategory(category);
+
+            product_temp.setQuantityPerUnit(product.getQuantityPerUnit());
+            product_temp.setUnitPrice(product.getUnitPrice());
+            product_temp.setAvailableColors(product.getAvailableColors());
+            product_temp.setAvailableSize(product.getAvailableSize());
+            product_temp.setSize(product.getSize());
+            product_temp.setColor(product.getColor());
+            product_temp.setDiscount(product.getDiscount());
+            product_temp.setUnitWeight(product.getUnitWeight());
+            product_temp.setUnitOnStock(product.getUnitOnStock());
+            product_temp.setUnitOnOrder(product.getUnitOnOrder());
 
             session.update(product_temp);
             return product_temp;

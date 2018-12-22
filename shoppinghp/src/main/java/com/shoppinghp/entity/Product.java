@@ -35,7 +35,7 @@ public class Product {
     private String availableSize;
 
     @Column(name = "AvailableColors", length = 200)
-    private String availableColor;
+    private String availableColors;
 
     @Column(name = "Size", length = 200)
     private String size;
@@ -50,7 +50,7 @@ public class Product {
     private String unitWeight;
 
     @Column(name = "UnitOnStock", length = 45)
-    private String unitStock;
+    private String unitOnStock;
 
     @Column(name = "UnitOnOrder", length = 45)
     private String unitOnOrder;
@@ -124,12 +124,12 @@ public class Product {
         this.availableSize = availableSize;
     }
 
-    public String getAvailableColor() {
-        return availableColor;
+    public String getAvailableColors() {
+        return availableColors;
     }
 
-    public void setAvailableColor(String availableColor) {
-        this.availableColor = availableColor;
+    public void setAvailableColors(String availableColors) {
+        this.availableColors = availableColors;
     }
 
     public String getSize() {
@@ -164,12 +164,12 @@ public class Product {
         this.unitWeight = unitWeight;
     }
 
-    public String getUnitStock() {
-        return unitStock;
+    public String getUnitOnStock() {
+        return unitOnStock;
     }
 
-    public void setUnitStock(String unitStock) {
-        this.unitStock = unitStock;
+    public void setUnitOnStock(String unitOnStock) {
+        this.unitOnStock = unitOnStock;
     }
 
     public String getUnitOnOrder() {

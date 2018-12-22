@@ -49,8 +49,6 @@
                                             </div>
                                         </div>
                                         <input type="hidden" th:field="*{productDescription}" id="productDescriptionHtml"></input>
-                                        <!--div th:field="*{productDescription}" id="editor">
-                                        </div-->
                                     </div>
 
                                     <div class="form-group">
@@ -74,6 +72,57 @@
                                             </option>
                                         </select>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="inputQuantityPerUnit">Số lượng trên mỗi đơn vị</label>
+                                        <input th:field="*{quantityPerUnit}" type="number" class="form-control" id="inputQuantityPerUnit" placeholder="Số lượng mỗi đơn vị">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputUnitPrice">Giá mỗi đơn vị</label>
+                                        <input th:field="*{unitPrice}" type="number" class="form-control" id="inputUnitPrice" placeholder="Giá mỗi đơn vị">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputAvailableSize">Size tồn kho</label>
+                                        <input th:field="*{availableSize}" type="text" class="form-control" id="inputAvailableSize" placeholder="Size tồn kho">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputAvailableColors">Màu tồn kho</label>
+                                        <input th:field="*{availableColors}" type="text" class="form-control" id="inputAvailableColors" placeholder="Màu tồn kho">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputSize">Size</label>
+                                        <input th:field="*{size}" type="text" class="form-control" id="inputSize" placeholder="Size">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputColor">Màu</label>
+                                        <input th:field="*{color}" type="text" class="form-control" id="inputColor" placeholder="Màu">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputDiscount">Giảm giá</label>
+                                        <input th:field="*{discount}" type="number" class="form-control" id="inputDiscount" placeholder="Giảm giá">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputUnitWeight">Cân nặng sản phẩm</label>
+                                        <input th:field="*{unitWeight}" type="text" class="form-control" id="inputUnitWeight" placeholder="Cân nặng sản phẩm">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputUnitOnStock">Số lượng còn trong kho</label>
+                                        <input th:field="*{unitOnStock}" type="number" class="form-control" id="inputUnitOnStock" placeholder="Số lượng còn trong kho">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputUnitOnOrder">Số lượng Order</label>
+                                        <input th:field="*{unitOnOrder}" type="number" class="form-control" id="inputUnitOnOrder" placeholder="Số lượng Order">
+                                    </div>
+
 
                                     <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 </form>
