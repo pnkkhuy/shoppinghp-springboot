@@ -1,0 +1,32 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="admin/fragments/blank :: head">
+</head>
+
+<body class="app">
+<div th:include="admin/fragments/blank :: loader"></div>
+
+<div>
+    <div th:include="admin/fragments/blank :: sidebar" class="sidebar">
+    </div>
+    <div class="page-container">
+        <div th:include="admin/fragments/blank :: header" class="header navbar">
+        </div>
+
+        <main class="main-content bgc-grey-100">
+            <div id="mainContent">
+                <div class="full-container">
+                    Hello world
+                </div>
+            </div>
+        </main>
+
+        <footer th:include="admin/fragments/blank :: footer" class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600"></footer>
+    </div>
+</div>
+
+<div th:include="admin/fragments/blank :: scripts"></div>
+</body>
+
+</html>
