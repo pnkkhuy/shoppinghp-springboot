@@ -12,6 +12,11 @@ public class HomeController {
         return "shop/index";
     }
 
+    @RequestMapping("/product")
+    public String product() {
+        return "shop/product";
+    }
+
     @RequestMapping("/403")
     public String loginerror() {
         return "admin/403";
