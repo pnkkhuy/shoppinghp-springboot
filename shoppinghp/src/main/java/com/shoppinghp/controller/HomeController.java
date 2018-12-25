@@ -9,7 +9,7 @@ public class HomeController {
 
     @RequestMapping("/")
     public String welcome() {
-        return "shop/fragments/blank_index";
+        return "shop/index";
     }
 
     @RequestMapping("/403")

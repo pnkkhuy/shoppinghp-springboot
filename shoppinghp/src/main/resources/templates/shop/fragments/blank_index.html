@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Home</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <title th:text="${pageTitle}">Home</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -25,11 +25,11 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="/shopping/vendor/select2/select2.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/shopping/vendor/daterangepicker/daterangepicker.css">
+    <link th:if="${haveDateRangePicker}" rel="stylesheet" type="text/css" href="/shopping/vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="/shopping/vendor/slick/slick.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/shopping/vendor/lightbox2/css/lightbox.min.css">
+    <link th:if="${haveLightBox}" rel="stylesheet" type="text/css" href="/shopping/vendor/lightbox2/css/lightbox.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="/shopping/css/util.css">
     <link rel="stylesheet" type="text/css" href="/shopping/css/main.css">
