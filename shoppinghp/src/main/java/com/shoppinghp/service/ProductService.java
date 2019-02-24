@@ -23,6 +23,16 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Product[] getProducts(int page) {
+        return new Product[0];
+    }
+
+    @Override
+    public long getTotalPages() {
+        return productDAO.getTotalPages();
+    }
+
+    @Override
     public Product getProductByProductID(int productId) {
         if(productId == 0)
             return null;

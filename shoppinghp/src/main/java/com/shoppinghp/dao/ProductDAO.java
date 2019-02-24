@@ -33,19 +33,6 @@ public class ProductDAO implements IProductDAO {
     @Override
     public List<Product> getAllProduct() {
         try {
-            /*
-            String hql = "FROM Product p join p.supplier ORDER BY p.productId";
-            Session session = this.sessionFactory.getCurrentSession();
-            Query query = session.createQuery(hql);
-            List<Object[]> listResult = query.list();
-            List<Product> products = new ArrayList<>();
-            for (Object[] aRow : listResult) {
-                Product product = (Product)aRow[0];
-                Category category = (Category)aRow[1];
-                product.setCategory(category);
-                products.add(product);
-            }
-            return products;*/
             String hql = "FROM Product p ORDER BY p.productId";
             Session session = this.sessionFactory.getCurrentSession();
             Query<Product> query = session.createQuery(hql, Product.class);
@@ -55,6 +42,27 @@ public class ProductDAO implements IProductDAO {
             logger.error("getAllProduct", e);
         }
         return null;
+    }
+
+    @Override
+    public Product[] getProducts(int page) {
+        return new Product[0];
+    }
+
+    @Override
+    public long getTotalPages() {
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            Query query = session.createQuery(
+                    "select count(*) from Product p where p.isActive = 1");
+            long count = (Long)query.uniqueResult();
+
+            return (count / 10) + 1;
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("getAllProduct", e);
+        }
+        return 0;
     }
 
     @Override

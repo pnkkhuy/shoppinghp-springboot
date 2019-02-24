@@ -1,6 +1,7 @@
 package com.shoppinghp.controller;
 
 import com.shoppinghp.service.ICategoryService;
+import com.shoppinghp.service.IProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,8 @@ public class HomeController {
     @Autowired
     private ICategoryService categoryService;
 
-
+    @Autowired
+    private IProductService productService;
 
     @RequestMapping("/")
     public String welcome() {
@@ -26,6 +28,8 @@ public class HomeController {
     @RequestMapping("/product")
     public String product(Model model) {
         model.addAttribute("category_list", categoryService.getAllCategory());
+        //model.addAttribute("product_list", productService.getAllProduct());
+        model.addAttribute("totalpages", productService.getTotalPages());
         return "shop/product";
     }
 
