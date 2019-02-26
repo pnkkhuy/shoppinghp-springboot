@@ -188,8 +188,8 @@ public class AdminController {
             Supplier supplier_add = supplierService.addSupplier(supplier);
 
             if(supplier_add != null) {
-                model.addAttribute("category_list", categoryService.getAllCategory());
-                return "admin/supplier";
+                //model.addAttribute("category_list", categoryService.getAllCategory());
+                return "redirect:/admin/supplier";
             }
         }catch (ShoppingException ex) {
             model.addAttribute("updateerror", ex.getMessage());

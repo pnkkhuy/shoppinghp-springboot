@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
@@ -26,10 +27,11 @@ public class HomeController {
     }
 
     @RequestMapping("/product")
-    public String product(Model model) {
+    public String product(@RequestParam String page , Model model) {
         model.addAttribute("category_list", categoryService.getAllCategory());
         //model.addAttribute("product_list", productService.getAllProduct());
         model.addAttribute("totalpages", productService.getTotalPages());
+        //model.addAttribute("product_list", productService)
         return "shop/product";
     }
 

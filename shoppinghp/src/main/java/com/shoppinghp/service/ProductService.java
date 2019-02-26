@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductService implements IProductService {
+public class ProductService implements IProductService  {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -24,7 +24,7 @@ public class ProductService implements IProductService {
 
     @Override
     public Product[] getProducts(int page) {
-        return new Product[0];
+        return productDAO.getProducts(page);
     }
 
     @Override

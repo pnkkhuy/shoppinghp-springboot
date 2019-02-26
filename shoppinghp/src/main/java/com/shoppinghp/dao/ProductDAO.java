@@ -4,14 +4,18 @@ import com.shoppinghp.entity.Category;
 import com.shoppinghp.entity.Product;
 import com.shoppinghp.entity.Supplier;
 import com.shoppinghp.exception.ShoppingException;
+import com.shoppinghp.globalvariables.GlobalVariables;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -46,7 +50,16 @@ public class ProductDAO implements IProductDAO {
 
     @Override
     public Product[] getProducts(int page) {
-        return new Product[0];
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            //CriteriaQuery<Product> cq = session.createQuery(Product.class);
+
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("getAllProduct", e);
+        }
+        return null;
     }
 
     @Override
@@ -57,7 +70,7 @@ public class ProductDAO implements IProductDAO {
                     "select count(*) from Product p where p.isActive = 1");
             long count = (Long)query.uniqueResult();
 
-            return (count / 10) + 1;
+            return (count + GlobalVariables.ITEM_PER_PAGE - 1)/GlobalVariables.ITEM_PER_PAGE;
         }catch (Exception e) {
             e.printStackTrace();
             logger.error("getAllProduct", e);
