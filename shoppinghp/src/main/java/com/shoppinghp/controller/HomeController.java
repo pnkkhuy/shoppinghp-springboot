@@ -29,7 +29,6 @@ public class HomeController {
     @RequestMapping("/product")
     public String product(@RequestParam int page , Model model) {
         model.addAttribute("category_list", categoryService.getAllCategory());
-        //model.addAttribute("product_list", productService.getAllProduct());
         model.addAttribute("totalpages", productService.getTotalPages());
         model.addAttribute("product_list", productService.getProducts(page));
         return "shop/product";
