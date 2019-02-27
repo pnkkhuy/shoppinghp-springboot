@@ -3,8 +3,10 @@ package com.shoppinghp.dao;
 import com.shoppinghp.entity.Category;
 import com.shoppinghp.entity.Supplier;
 import com.shoppinghp.exception.ShoppingException;
+import com.shoppinghp.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,31 +21,45 @@ import java.util.List;
 public class SupplierDAO implements ISupplierDAO {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
     @Override
     public List<Supplier> getAllSupplier() {
-        String hql = "FROM Supplier as s ORDER BY s.supplierId";
-        Session session = this.sessionFactory.getCurrentSession();
-        Query<Supplier> query = session.createQuery(hql, Supplier.class);
-        return query.getResultList();
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            String hql = "FROM Supplier as s ORDER BY s.supplierId";
+            Query<Supplier> query = session.createQuery(hql, Supplier.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 
     @Override
     public Supplier getSupplierBySupplierID(int supplierId) {
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Supplier s where supplierId = :supplierId");
-        query.setParameter("supplierId", supplierId);
-        return (Supplier) query.list().get(0);
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("FROM Supplier s where supplierId = :supplierId");
+            query.setParameter("supplierId", supplierId);
+            return (Supplier) query.list().get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 
     @Override
     public Supplier updateSupplier(Supplier supplier) throws ShoppingException {
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Supplier s where supplierId = :supplierId");
-        query.setParameter("supplierId", supplier.getSupplierId());
-        try {
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("FROM Supplier s where supplierId = :supplierId");
+            query.setParameter("supplierId", supplier.getSupplierId());
             Supplier supplier_temp = (Supplier) query.list().get(0);
             supplier_temp.setAddress(supplier.getAddress());
             supplier_temp.setCompanyName(supplier.getCompanyName());
@@ -57,27 +73,44 @@ public class SupplierDAO implements ISupplierDAO {
             return supplier_temp;
         }catch (Exception ex) {
             ex.printStackTrace();
-            logger.error(ex.toString());
-            throw new ShoppingException(ex.toString());
+            if(transaction != null)
+                transaction.rollback();
+            throw ex;
         }
     }
 
     @Override
     public int updateSupplierStatus(int supplierId, short isActive) throws Exception {
-        String hql = "UPDATE Supplier s SET s.isActive = :isActive WHERE supplierId = :supplierId";
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery(hql);
-        query.setParameter("isActive", isActive);
-        query.setParameter("supplierId", supplierId);
-        int result = query.executeUpdate();
-        return result;
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            String hql = "UPDATE Supplier s SET s.isActive = :isActive WHERE supplierId = :supplierId";
+            Query query = session.createQuery(hql);
+            query.setParameter("isActive", isActive);
+            query.setParameter("supplierId", supplierId);
+            int result = query.executeUpdate();
+            return result;
+        }catch (Exception e) {
+            e.printStackTrace();
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 
     @Override
     public Supplier addSupplier(Supplier supplier) {
-        supplier.setIsActive((short) 1);
-        Session session = this.sessionFactory.getCurrentSession();
-        int id =  (int) session.save(supplier);
-        return getSupplierBySupplierID(id);
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            supplier.setIsActive((short) 1);
+            int id = (int) session.save(supplier);
+            return getSupplierBySupplierID(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 }

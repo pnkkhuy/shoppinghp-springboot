@@ -5,9 +5,11 @@ import com.shoppinghp.entity.Product;
 import com.shoppinghp.entity.Supplier;
 import com.shoppinghp.exception.ShoppingException;
 import com.shoppinghp.globalvariables.GlobalVariables;
+import com.shoppinghp.utils.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -15,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -26,9 +30,6 @@ public class ProductDAO implements IProductDAO {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private SessionFactory sessionFactory;
-
-    @Autowired
     ICategoryDAO categoryDAO;
 
     @Autowired
@@ -36,36 +37,43 @@ public class ProductDAO implements IProductDAO {
 
     @Override
     public List<Product> getAllProduct() {
-        try {
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
             String hql = "FROM Product p ORDER BY p.productId";
-            Session session = this.sessionFactory.getCurrentSession();
+            transaction = session.beginTransaction();
             Query<Product> query = session.createQuery(hql, Product.class);
             return  query.list();
         }catch (Exception e) {
             e.printStackTrace();
-            logger.error("getAllProduct", e);
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
         }
-        return null;
     }
 
     @Override
     public Product[] getProducts(int page) {
-        try {
-            Session session = this.sessionFactory.getCurrentSession();
-            //CriteriaQuery<Product> cq = session.createQuery(Product.class);
-
-
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            String hql = "FROM Product p";
+            Query<Product> query = session.createQuery(hql, Product.class);
+            query.setFirstResult((page - 1) * GlobalVariables.ITEM_PER_PAGE)
+                    .setMaxResults(GlobalVariables.ITEM_PER_PAGE);
+            return query.getResultStream().toArray(Product[]::new);
         }catch (Exception e) {
             e.printStackTrace();
-            logger.error("getAllProduct", e);
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
         }
-        return null;
     }
 
     @Override
     public long getTotalPages() {
-        try {
-            Session session = this.sessionFactory.getCurrentSession();
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
             Query query = session.createQuery(
                     "select count(*) from Product p where p.isActive = 1");
             long count = (Long)query.uniqueResult();
@@ -73,25 +81,34 @@ public class ProductDAO implements IProductDAO {
             return (count + GlobalVariables.ITEM_PER_PAGE - 1)/GlobalVariables.ITEM_PER_PAGE;
         }catch (Exception e) {
             e.printStackTrace();
-            logger.error("getAllProduct", e);
+            if(transaction != null)
+                transaction.rollback();
         }
         return 0;
     }
 
     @Override
     public Product getProductByProductID(int productId) {
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Product p where productId = :productId");
-        query.setParameter("productId", productId);
-        return (Product) query.list().get(0);
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("FROM Product p where productId = :productId");
+            query.setParameter("productId", productId);
+            return (Product) query.list().get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @Override
     public Product updateProduct(Product product) throws ShoppingException {
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Product p where productId = :productId");
-        query.setParameter("productId", product.getProductId());
-        try {
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("FROM Product p where productId = :productId");
+            query.setParameter("productId", product.getProductId());
+
             Product product_temp = (Product) query.list().get(0);
             product_temp.setProductName(product.getProductName());
             product_temp.setProductDescription(product.getProductDescription());
@@ -117,27 +134,42 @@ public class ProductDAO implements IProductDAO {
             return product_temp;
         }catch (Exception ex) {
             ex.printStackTrace();
-            logger.error(ex.toString());
-            throw new ShoppingException(ex.toString());
+            if(transaction != null)
+                transaction.rollback();
+            throw ex;
         }
     }
 
     @Override
     public int updateProductStatus(int productId, short isActive) throws Exception {
-        String hql = "UPDATE Product p SET p.isActive = :isActive WHERE productId = :productId";
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery(hql);
-        query.setParameter("isActive", isActive);
-        query.setParameter("productId", productId);
-        int result = query.executeUpdate();
-        return result;
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            String hql = "UPDATE Product p SET p.isActive = :isActive WHERE productId = :productId";
+            Query query = session.createQuery(hql);
+            query.setParameter("isActive", isActive);
+            query.setParameter("productId", productId);
+            int result = query.executeUpdate();
+            return result;
+        } catch (Exception e){
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 
     @Override
     public Product addProduct(Product product) {
-        product.setIsActive((short) 1);
-        Session session = this.sessionFactory.getCurrentSession();
-        int id =  (int) session.save(product);
-        return getProductByProductID(id);
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            product.setIsActive((short) 1);
+            int id = (int) session.save(product);
+            return getProductByProductID(id);
+        } catch (Exception e) {
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 }

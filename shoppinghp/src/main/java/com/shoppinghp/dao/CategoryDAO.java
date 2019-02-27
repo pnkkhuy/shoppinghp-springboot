@@ -3,8 +3,10 @@ package com.shoppinghp.dao;
 import com.shoppinghp.entity.Account;
 import com.shoppinghp.entity.Category;
 import com.shoppinghp.exception.ShoppingException;
+import com.shoppinghp.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,31 +22,46 @@ public class CategoryDAO implements ICategoryDAO {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
     @Override
     public List<Category> getAllCategory() {
-        String hql = "FROM Category as c ORDER BY c.categoryId";
-        Session session = this.sessionFactory.getCurrentSession();
-        Query<Category> query = session.createQuery(hql, Category.class);
-        return query.getResultList();
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            String hql = "FROM Category as c ORDER BY c.categoryId";
+            Query<Category> query = session.createQuery(hql, Category.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 
     @Override
     public Category getCategoryByCategoryID(int categoryId) {
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Category c where categoryId = :categoryId");
-        query.setParameter("categoryId", categoryId);
-        return (Category) query.list().get(0);
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+
+            Query query = session.createQuery("FROM Category c where categoryId = :categoryId");
+            query.setParameter("categoryId", categoryId);
+            return (Category) query.list().get(0);
+        } catch (Exception e) {
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 
     @Override
     public Category updateCategory(Category category) throws ShoppingException {
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Category c where categoryId = :categoryId");
-        query.setParameter("categoryId", category.getCategoryId());
-        try {
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+
+            Query query = session.createQuery("FROM Category c where categoryId = :categoryId");
+            query.setParameter("categoryId", category.getCategoryId());
             Category category_temp = (Category) query.list().get(0);
             category_temp.setCategoryName(category.getCategoryName());
             category_temp.setDescription(category.getDescription());
@@ -52,28 +69,43 @@ public class CategoryDAO implements ICategoryDAO {
             return category_temp;
         }catch (Exception ex) {
             ex.printStackTrace();
-            logger.error(ex.toString());
-            throw new ShoppingException(ex.toString());
+            if(transaction != null)
+                transaction.rollback();
+            throw ex;
         }
     }
 
     @Override
     public int updateCategoryStatus(int categoryId, short isActive) throws Exception {
-        String hql = "UPDATE Category c SET c.isActive = :isActive WHERE categoryId = :categoryId";
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery(hql);
-        query.setParameter("isActive", isActive);
-        query.setParameter("categoryId", categoryId);
-        int result = query.executeUpdate();
-        return result;
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            String hql = "UPDATE Category c SET c.isActive = :isActive WHERE categoryId = :categoryId";
+            Query query = session.createQuery(hql);
+            query.setParameter("isActive", isActive);
+            query.setParameter("categoryId", categoryId);
+            int result = query.executeUpdate();
+            return result;
+        }catch (Exception e) {
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
 
     }
 
     @Override
     public Category addCategory(Category category) {
-        category.setIsActive((short) 1);
-        Session session = this.sessionFactory.getCurrentSession();
-        int id =  (int) session.save(category);
-        return getCategoryByCategoryID(id);
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            category.setIsActive((short) 1);
+            int id = (int) session.save(category);
+            return getCategoryByCategoryID(id);
+        }catch (Exception e) {
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.shoppinghp.dao;
 
+import com.shoppinghp.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +18,21 @@ import java.util.List;
 public class RoleDAO implements IRoleDAO {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
-
     @Override
     public List<String> getAllRole() {
-        String hql = "SELECT role FROM Role";
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery(hql);
-        List<String> result = query.list();
-        return result;
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            transaction = session.beginTransaction();
+            String hql = "SELECT role FROM Role";
+            Query query = session.createQuery(hql);
+            List<String> result = query.list();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(transaction != null)
+                transaction.rollback();
+            throw e;
+        }
+
     }
 }
