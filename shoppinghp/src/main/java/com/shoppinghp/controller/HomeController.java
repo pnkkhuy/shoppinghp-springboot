@@ -27,9 +27,11 @@ public class HomeController {
     }
 
     @RequestMapping("/product")
-    public String product(@RequestParam int page , Model model) {
+    public String product(@RequestParam(required = false) Integer page , Model model) {
         model.addAttribute("category_list", categoryService.getAllCategory());
         model.addAttribute("totalpages", productService.getTotalPages());
+        if(page == null)
+            page = 1;
         model.addAttribute("product_list", productService.getProducts(page));
         return "shop/product";
     }
