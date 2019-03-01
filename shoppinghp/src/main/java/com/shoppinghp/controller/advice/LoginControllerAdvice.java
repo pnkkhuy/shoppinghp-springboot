@@ -28,6 +28,7 @@ public class LoginControllerAdvice {
             try {
                 Account account = accountService.getAccount(email);
                 model.addAttribute("account_fullName", account.getFullName());
+                model.addAttribute("account_image", account.getImageString());
             } catch (Exception ex) {
                 ex.printStackTrace();
                 logger.error("addLoginToModel: " + ex.getMessage());

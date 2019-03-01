@@ -80,7 +80,7 @@ public class AccountDAO implements IAccountDAO {
         Transaction transaction = null;
         try(Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT a.email, a.password, a.role,a.isActive " +
+            Query query = session.createQuery("SELECT a.email, a.password, a.role, a.image, a.isActive " +
                     "FROM Account a " +
                     "Where a.email like :email");
             query.setParameter("email", email);
@@ -90,7 +90,8 @@ public class AccountDAO implements IAccountDAO {
                 account.setEmail(row[0].toString());
                 account.setPassword(row[1].toString());
                 account.setRole(row[2].toString());
-                account.setIsActive((short) row[3]);
+                account.setImage((byte[]) row[3]);
+                account.setIsActive((short) row[4]);
             }
             return account;
         } catch (Exception e) {
